@@ -8,7 +8,6 @@ import (
 	"io"
 	"net"
 	"os"
-	"runtime"
 
 	"github.com/sirupsen/logrus"
 	"github.com/slackhq/nebula/iputil"
@@ -22,10 +21,6 @@ type tun struct {
 }
 
 func newTunFromFd(l *logrus.Logger, deviceFd int, cidr *net.IPNet, _ int, routes []Route, _ int) (*tun, error) {
-	if len(routes) > 0 {
-		return nil, fmt.Errorf("routes are not supported in %s", runtime.GOOS)
-	}
-
 	file := os.NewFile(uintptr(deviceFd), "/dev/net/tun")
 
 	return &tun{

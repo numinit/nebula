@@ -9,7 +9,6 @@ import (
 	"io"
 	"net"
 	"os"
-	"runtime"
 	"sync"
 	"syscall"
 
@@ -27,10 +26,6 @@ func newTun(_ *logrus.Logger, _ string, _ *net.IPNet, _ int, _ []Route, _ int, _
 }
 
 func newTunFromFd(_ *logrus.Logger, deviceFd int, cidr *net.IPNet, _ int, routes []Route, _ int) (*tun, error) {
-	if len(routes) > 0 {
-		return nil, fmt.Errorf("routes are not supported in %s", runtime.GOOS)
-	}
-
 	file := os.NewFile(uintptr(deviceFd), "/dev/tun")
 	return &tun{
 		cidr:            cidr,
